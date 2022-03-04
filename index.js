@@ -1,5 +1,4 @@
 require("http").createServer((req, res) => res.end("Self Coded By Neox And NarutoCodm")).listen(process.env.PORT || 8000)
-const fs = require("fs")
 const {Client, 
       Collection, 
        Discord
@@ -23,7 +22,7 @@ const db = require("quick.db")
 let number = 69
 console.log(`Number = ${number}`) //correct method
 
-//
+//----Handler------
 client.commands = new Collection();
 client.aliases = new Collection();
 
@@ -45,6 +44,18 @@ client.aliases = new Collection();
      console.log("server started https://discord.gg/f36AemJdNn%22");
  });
 
+//------------------------Snipe--------------------------
+
+client.snipes = new Map();
+client.on("messageDelete", function(message, channel) {
+  client.snipes.set(message.channel.id, {
+    content: message.content,
+    author: message.author.tag,
+    image: message.attachments.first()
+      ? message.attachments.first().proxyURL
+      : null
+  });
+});
 
 
 //--------Message-------
@@ -80,7 +91,6 @@ client.on("message", message => {
   }
 });
 
-
 //
 client.on('message', async (message) => {
   if(message.content.includes(client.user.id)) {
@@ -93,62 +103,29 @@ client.on('message', async (message) => {
 }
 })
 
-    
+//
+client.on('guildCreate', guild => {
+    const channel = guild.channels.cache.find(channel => channel.type === 'text' && channel.permissionsFor(guild.me).has('SEND_MESSAGES'))
+ let embed = new MessageEmbed()
+ .setColor('BLACK')
+ .setTitle('Connected To New Server')
+ .setURL('https://dsc.gg/developers')
+ .setDescription('<<<:dot:885357428818997298>885357428818997298>885357428818997298> Thank You For Inviting Me. My prefix is `$`. Run l.help for more info about me!')
+ .setThumbnail('https://cdn.discordapp.com/avatars/892003058425401354/ce569bad79136416c40fc2eb69747b11.webp')
+ .addFields(
+ { name: 'Creator', value: 'NarutoCodm' }
+ )
 
-
-client.on("guildCreate", guild => {
-
-  const { MessageEmbed } = require("discord.js");
-
-//Subscribe to Atreya YT
-  const ID = "939872598156791858"; 
-//Subscribe to Atreya YT
-
-  const channel = client.channels.cache.get(ID);
-
-  const sowner = guild.owner.user;
-
-  if (!channel) return;
-
-  const embed = new MessageEmbed()
-
-    .setTitle("**I Joined a Server!**")
-
-    .addField(`**SERVER NAME**`, `\`\`\`${guild.name}\`\`\``)
-
-    .addField(`**SERVER ID**`, `\`\`\`${guild.id}\`\`\``)
-
-    .addField(`**SERVER OWNER**`, `\`\`\`${sowner.tag}\`\`\``)
-
-    .addField(`**OWNER ID**`, `\`\`\`${sowner.id}\`\`\``)
- 
-    .addField(`**CREATED ON**`, `\`\`\`${guild.createdAt}\`\`\``)
-  
-    .addField(`**MEMBERS**`, `\`\`\`${guild.memberCount}\`\`\``)
-  
-    .setTimestamp()
-
-    .setColor("32CD32")
-
-    .setFooter(`Servers Count - ${client.guilds.cache.size}`);
-
-  channel.send(embed);
-
-});
- 
+ .setImage('https://cdn.discordapp.com/avatars/892003058425401354/ce569bad79136416c40fc2eb69747b11.webp')
+ .setTimestamp()
+ .setFooter('NarutoCodm', 'https://dsc.gg/develops');
+channel.send(embed);
+})  
 
 
 //------status
 client.on("ready", () => {
-  console.log(`Hey user ${client.user.tag} has logged in. is online`)
-  console.log(`==================================================================
-* code by NarutoCodm ✔️
-* © 2022 zerobot development ✔. All Rights Reserved To  Naruto Codm.
-==================================================================`)
-console.log(`[NAME] ${client.user.tag}`)
-console.log(`[ID] ${client.user.id}`)
-console.log(`[GUILDS] ${client.guilds.cache.size}`)
-console.log(`[PING] ${client.ws.ping}`);
+  console.log(`Hey user ${client.user.tag} has logged in. is online`);
   client.user.setPresence({
     activity : {
       name: "$help | ZeroBot", 
@@ -172,4 +149,4 @@ console.log(`[PING] ${client.ws.ping}`);
   })
 })
 
-client.login(process.end.TOKEN);
+client.login(process.env.TOKEN);
