@@ -30,7 +30,7 @@ module.exports = {
 
       let emx = new MessageEmbed()
         .setDescription('**A fun and moderation bot with 150+ commnds and 10+ category ** \n**If u got any error do ** `qbug` **your bug must be 10 ltters **')
-  
+        .setImage('https://cdn.discordapp.com/attachments/939872592817438810/948430373329731594/standard_2.gif')
         .setColor("BLUE")
         .setFooter(client.user.username, client.user.displayAvatarURL())
         
@@ -54,7 +54,7 @@ module.exports = {
 
         emx.addField(`${category.toUpperCase()}[${value.length}]`, desc);
       }
-     emx.addField('important links ','**:link:  [Support](https://dsc.gg/abotsupport)**  | **[website](https://automodbot.com)**')
+     emx.addField('important links ','**:link:  [Support](https://dsc.gg/zerobotdev)**  | **[INVITE](mhttps://discord.com/oauth2/authorize?client_id=933351535109373972&permissions=21411396854&scope=bot%20applications.commands)**')
       return message.channel.send(emx)
 
     }
